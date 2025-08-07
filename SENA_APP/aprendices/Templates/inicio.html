@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - SENA APP{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="jumbotron text-white p-5 rounded position-relative">
+            <div class="row align-items-center">
+                <div class="col-md-9">
+                    <h1 class="display-3 fw-bold mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                        <img width="70px" src="https://png.pngtree.com/png-clipart/20230411/original/pngtree-the-books-without-background-png-image_9043527.png" alt="Logo Bienvenida"> 
+                        Bienvenido a SENA APP
+                    </h1>
+                    <p class="lead fs-4 mb-4" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.2);">
+                        Sistema de Gestión de Aprendices del Servicio Nacional de Aprendizaje
+                    </p>
+                    <hr class="my-4 border-white" style="border-width: 2px;">
+                    <p class="fs-5 mb-4" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">
+                        Administra y consulta la información de los aprendices de manera eficiente.
+                    </p>
+                </div>
+                <div class="col-md-3 text-center">
+                    <div style="font-size: 6rem;">
+                        <img width="220px" src="https://static.vecteezy.com/system/resources/thumbnails/051/228/013/small/a-graduation-cap-with-a-yellow-tassel-png.png" alt="Logo Bienvenida"> 
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <a class="btn btn-light btn-lg px-4 py-3 me-3" href="{% url 'aprendices:lista_aprendices' %}" role="button">
+                        👥 Ver Aprendices
+                    </a>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a class="btn btn-outline-light btn-lg px-4 py-3" href="/admin/" role="button">
+                        Panel Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Section -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="text-center mb-4 fw-bold" style="color: #008000;">
+            📊 Panel de Control
+        </h2>
+    </div>
+</div>
+
+<!-- Main Cards Section -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+                <span style="font-size: 2rem; margin-right: 15px;">👥</span>
+                <div>
+                    <h5 class="mb-0">Gestión de Aprendices</h5>
+                    <small class="opacity-75">Sistema de administración</small>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p class="card-text fs-6 mb-3">
+                            Consulta y administra todos los aprendices registrados en el sistema.
+                        </p>
+                        <div class="info-item">
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <h6 class="mb-1 fw-bold" style="color: #008000;">Total de Aprendices</h6>
+                                    <small class="text-muted">Estudiantes registrados</small>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <span class="badge badge-sena fs-5 px-3 py-2">{{ total_aprendices }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div style="font-size: 4rem;">📋</div>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                    <a href="{% url 'aprendices:lista_aprendices' %}" class="btn btn-success btn-lg px-4">
+                        Ver Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+                <span style="font-size: 2rem; margin-right: 15px;">⚙️</span>
+                <div>
+                    <h5 class="mb-0">Panel Administrativo</h5>
+                    <small class="opacity-75">Configuración del sistema</small>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p class="card-text fs-6 mb-3">
+                            Accede al panel de administración completo para gestionar el sistema.
+                        </p>
+                        <div class="info-item">
+                            <h6 class="mb-2 fw-bold" style="color: #ff6600;">Funcionalidades:</h6>
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-1">✓ Gestión de usuarios</li>
+                                <li class="mb-1">✓ Configuración</li>
+                                <li class="mb-1">✓ Reportes</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div style="font-size: 4rem;">🔧</div>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                    <a href="/admin/" class="btn btn-primary btn-lg px-4">
+                        Panel Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><div class="row">
+                    <div class="col-md-8">
+                        <p class="card-text fs-6 mb-3">
+                            Consulta y administra todos los aprendices registrados en el sistema. 
+                            Accede a información detallada de cada estudiante.
+                        </p>
+                        <div class="info-item">
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <h6 class="mb-1 fw-bold" style="color: #00b894;">Total de Aprendices Registrados</h6>
+                                    <small class="text-muted">Estudiantes activos en el sistema</small>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <span class="badge badge-sena fs-5 px-3 py-2">{{ total_aprendices }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="programa-icon mx-auto mb-3" style="width: 100px; height: 100px; font-size: 2.5rem;">
+                            📋
+                        </div>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                    <a href="{% url 'aprendices:lista_aprendices' %}" class="btn btn-success btn-lg px-4">
+                        📋 Ver Lista Completa
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+                <div class="modalidad-icon me-3" style="background: linear-gradient(135deg, #fd7f28 0%, #e17055 100%);">
+                 <img width="50px" src="https://cdn-icons-png.flaticon.com/512/2471/2471610.png" alt="Logo Panel Admin"> 
+                </div>
+                <div>
+                    <h5 class="mb-0">Panel Administrativo</h5>
+                    <small class="opacity-75">Configuración del sistema</small>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p class="card-text fs-6 mb-3">
+                            Accede al panel de administración completo de Django para gestionar 
+                            todos los aspectos del sistema.
+                        </p>
+                        <div class="info-item">
+                            <h6 class="mb-2 fw-bold" style="color: #fd7f28;">Funcionalidades Administrativas:</h6>
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-1">✓ Gestión de usuarios</li>
+                                <li class="mb-1">✓ Configuración del sistema</li>
+                                <li class="mb-1">✓ Reportes y estadísticas</li>
+                                <li class="mb-1">✓ Mantenimiento de datos</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="programa-icon mx-auto mb-3" style="width: 100px; height: 100px; font-size: 2.5rem; background: linear-gradient(135deg, #fd7f28 0%, #e17055 100%);">
+                          <img width="50px" src="https://cdn-icons-png.flaticon.com/512/7631/7631097.png" alt="Logo Panel Admin">  
+                        </div>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                    <a href="/admin/" class="btn btn-primary btn-lg px-4">
+                        Ir al Panel Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Stats -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header text-center">
+                <h4 class="mb-0">📈 Estado del Sistema</h4>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <h3 class="fw-bold mb-2" style="color: #008000;">{{ total_aprendices }}</h3>
+                        <p class="mb-0 text-muted">Aprendices Registrados</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h3 class="fw-bold mb-2" style="color: #ff6600;">100%</h3>
+                        <p class="mb-0 text-muted">Sistema Operativo</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h3 class="fw-bold mb-2" style="color: #008000;">2025</h3>
+                        <p class="mb-0 text-muted">Versión Actual</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
