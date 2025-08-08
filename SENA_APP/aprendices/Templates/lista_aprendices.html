@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Lista de Aprendices - SENA APP{% endblock %}
@@ -70,7 +69,7 @@
                 <div class="d-flex align-items-center">
                     <span style="font-size: 1.5rem; margin-right: 15px;">📋</span>
                     <div>
-                        <h5 class="mb-1">Registro de Estudiantes</h5>
+                        <h5 class="mb-1">Registro de Aprendices</h5>
                         <small class="opacity-75">Lista detallada con información de contacto</small>
                     </div>
                 </div>
@@ -102,6 +101,9 @@
                                     <th>
                                         <i class="fas fa-phone"></i> Teléfono
                                     </th>
+                                    <th>
+                                        <i class="fas fa-map-marker-alt"></i> Ciudad
+                                    </th>
                                     <th class="text-center" style="width: 120px;">
                                         <i class="fas fa-cogs"></i> Acciones
                                     </th>
@@ -127,13 +129,16 @@
                                                 <div class="fw-bold" style="color: #2d3436;">
                                                     {{ aprendiz.nombre }} {{ aprendiz.apellido }}
                                                 </div>
+                                                <small class="text-muted">
+                                                    Nacido: {{ aprendiz.fecha_nacimiento|date:"d/m/Y"|default:"No registrada" }}
+                                                </small>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         {% if aprendiz.programa %}
-                                            <span class="badge badge-sena px-3 py-2">
-                                                {{ aprendiz.programa }}
+                                            <span class="badge badge-sena px-3 py-2" title="{{ aprendiz.programa }}">
+                                                {{ aprendiz.programa|truncatechars:25 }}
                                             </span>
                                         {% else %}
                                             <span class="badge bg-secondary px-3 py-2">
@@ -145,7 +150,9 @@
                                         {% if aprendiz.correo %}
                                             <div class="d-flex align-items-center">
                                                 <span style="color: #008000; margin-right: 8px;">@</span>
-                                                <span class="text-muted">{{ aprendiz.correo }}</span>
+                                                <a href="mailto:{{ aprendiz.correo }}" class="text-decoration-none text-muted" title="{{ aprendiz.correo }}">
+                                                    {{ aprendiz.correo|truncatechars:20 }}
+                                                </a>
                                             </div>
                                         {% else %}
                                             <span class="text-muted fst-italic">No registrado</span>
@@ -155,16 +162,37 @@
                                         {% if aprendiz.telefono %}
                                             <div class="d-flex align-items-center">
                                                 <span style="color: #ff6600; margin-right: 8px;">📞</span>
-                                                <span class="text-muted">{{ aprendiz.telefono }}</span>
+                                                <a href="tel:{{ aprendiz.telefono }}" class="text-decoration-none text-muted">
+                                                    {{ aprendiz.telefono }}
+                                                </a>
                                             </div>
                                         {% else %}
                                             <span class="text-muted fst-italic">No registrado</span>
                                         {% endif %}
                                     </td>
+                                    <td>
+                                        {% if aprendiz.ciudad %}
+                                            <div class="d-flex align-items-center">
+                                                <span style="color: #008000; margin-right: 8px;">📍</span>
+                                                <span class="text-muted">{{ aprendiz.ciudad }}</span>
+                                            </div>
+                                        {% else %}
+                                            <span class="text-muted fst-italic">No registrada</span>
+                                        {% endif %}
+                                    </td>
                                     <td class="text-center">
-                                        <button class="btn btn-info btn-sm px-3" onclick="verDetalle({{ aprendiz.id }})" title="Ver detalles completos">
-                                            <i class="fas fa-eye"></i> Ver
-                                        </button>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'aprendices:detalle_aprendiz' aprendiz.id %}" 
+                                               class="btn btn-info btn-sm px-3" 
+                                               title="Ver detalles completos">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <button class="btn btn-outline-info btn-sm" 
+                                                    onclick="verModalDetalle({{ aprendiz.id }})" 
+                                                    title="Vista rápida">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -176,7 +204,7 @@
                         <div style="font-size: 6rem; margin-bottom: 20px;">📭</div>
                         <h4 class="fw-bold mb-3" style="color: #ff6600;">No hay aprendices registrados</h4>
                         <p class="text-muted mb-4">
-                            Aún no se han registrado estudiantes en el sistema.
+                            Aún no se han registrado aprendices en el sistema.
                         </p>
                         <a href="/admin/" class="btn btn-primary btn-lg px-4">
                             Agregar Primer Aprendiz
@@ -196,7 +224,7 @@
                     <div class="col-md-6 text-md-end">
                         <small class="text-muted">
                             <i class="fas fa-calendar me-1"></i>
-                            Última actualización: Hoy
+                            Última actualización: {% now "d/m/Y H:i" %}
                         </small>
                     </div>
                 </div>
@@ -211,21 +239,21 @@
 <div class="row mt-4">
     <div class="col-12 text-center">
         <div class="d-flex flex-wrap justify-content-center gap-3">
-            <a href="/admin/" class="btn btn-primary btn-lg px-4">
-                Agregar Nuevo Aprendiz
+            <a href="/admin/aprendices/aprendiz/add/" class="btn btn-primary btn-lg px-4">
+                <i class="fas fa-plus me-2"></i>Agregar Nuevo Aprendiz
             </a>
             <button class="btn btn-success btn-lg px-4" onclick="window.print()">
-                Imprimir Lista
+                <i class="fas fa-print me-2"></i>Imprimir Lista
             </button>
             <a href="{% url 'aprendices:inicio' %}" class="btn btn-secondary btn-lg px-4">
-                Volver al Inicio
+                <i class="fas fa-home me-2"></i>Volver al Inicio
             </a>
         </div>
     </div>
 </div>
 {% endif %}
 
-<!-- Modal para mostrar detalles del aprendiz -->
+<!-- Modal para vista rápida del aprendiz -->
 <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="modalDetalleLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -233,8 +261,8 @@
                 <div class="d-flex align-items-center">
                     <span style="font-size: 1.5rem; margin-right: 15px;">👤</span>
                     <div>
-                        <h5 class="modal-title mb-1" id="modalDetalleLabel">Información del Aprendiz</h5>
-                        <small class="opacity-75">Datos completos del estudiante</small>
+                        <h5 class="modal-title mb-1" id="modalDetalleLabel">Vista Rápida - Aprendiz</h5>
+                        <small class="opacity-75">Datos básicos del estudiante</small>
                     </div>
                 </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -244,18 +272,18 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    Cerrar
+                    <i class="fas fa-times me-2"></i>Cerrar
                 </button>
-                <button type="button" class="btn btn-success">
-                    Editar Información
-                </button>
+                <a href="detalle_aprendiz" id="btnVerCompleto" class="btn btn-success">
+                    <i class="fas fa-eye me-2"></i>Ver Detalles Completos
+                </a>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-function verDetalle(aprendizId) {
+function verModalDetalle(aprendizId) {
     // Buscar el aprendiz en la tabla
     const filas = document.querySelectorAll('tbody tr');
     let aprendiz = null;
@@ -268,32 +296,43 @@ function verDetalle(aprendizId) {
                 id: aprendizId,
                 documento: celdas[1].textContent.trim(),
                 nombre: celdas[2].querySelector('.fw-bold').textContent.trim(),
-                programa: celdas[3].querySelector('.badge') ? celdas[3].querySelector('.badge').textContent.trim() : 'No asignado',
-                correo: celdas[4].querySelector('.text-muted') ? celdas[4].querySelector('.text-muted').textContent.trim() : 'No registrado',
-                telefono: celdas[5].querySelector('.text-muted') ? celdas[5].querySelector('.text-muted').textContent.trim() : 'No registrado'
+                fechaNacimiento: celdas[2].querySelector('small') ? 
+                    celdas[2].querySelector('small').textContent.replace('Nacido: ', '').trim() : 'No registrada',
+                programa: celdas[3].querySelector('.badge') ? 
+                    celdas[3].querySelector('.badge').getAttribute('title') || celdas[3].querySelector('.badge').textContent.trim() : 'No asignado',
+                correo: celdas[4].querySelector('a') ? 
+                    celdas[4].querySelector('a').getAttribute('href').replace('mailto:', '') : 'No registrado',
+                telefono: celdas[5].querySelector('a') ? 
+                    celdas[5].querySelector('a').getAttribute('href').replace('tel:', '') : 'No registrado',
+                ciudad: celdas[6].querySelector('.text-muted') ? 
+                    celdas[6].querySelector('.text-muted').textContent.trim() : 'No registrada'
             };
         }
     });
     
     if (aprendiz) {
+        // Actualizar el enlace "Ver Detalles Completos"
+        document.getElementById('btnVerCompleto').href = `/aprendiz/${aprendiz.id}/`;
+        
         document.getElementById('modalDetalleBody').innerHTML = `
             <div class="row">
                 <div class="col-md-4 text-center mb-4">
-                    <div class="instructor-avatar mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                    <div class="instructor-avatar mx-auto mb-3" style="width: 100px; height: 100px; font-size: 2.5rem;">
                         ${aprendiz.nombre.split(' ')[0][0]}${aprendiz.nombre.split(' ').length > 1 ? aprendiz.nombre.split(' ')[1][0] : ''}
                     </div>
                     <h5 class="fw-bold" style="color: #008000;">ID: ${aprendiz.id}</h5>
+                    <p class="text-muted mb-0">${aprendiz.documento}</p>
                 </div>
                 <div class="col-md-8">
                     <div class="info-item">
                         <div class="row mb-3">
                             <div class="col-sm-4">
                                 <strong style="color: #ff6600;">
-                                    📄 Documento:
+                                    👤 Nombre Completo:
                                 </strong>
                             </div>
                             <div class="col-sm-8">
-                                <span class="fw-semibold">${aprendiz.documento}</span>
+                                <span class="fw-semibold">${aprendiz.nombre}</span>
                             </div>
                         </div>
                         <hr style="border-color: #008000; opacity: 0.3;">
@@ -301,11 +340,11 @@ function verDetalle(aprendizId) {
                         <div class="row mb-3">
                             <div class="col-sm-4">
                                 <strong style="color: #ff6600;">
-                                    👤 Nombre:
+                                    📅 Fecha Nacimiento:
                                 </strong>
                             </div>
                             <div class="col-sm-8">
-                                <span class="fw-semibold">${aprendiz.nombre}</span>
+                                <span>${aprendiz.fechaNacimiento}</span>
                             </div>
                         </div>
                         <hr style="border-color: #008000; opacity: 0.3;">
@@ -337,7 +376,7 @@ function verDetalle(aprendizId) {
                         </div>
                         <hr style="border-color: #008000; opacity: 0.3;">
                         
-                        <div class="row mb-0">
+                        <div class="row mb-3">
                             <div class="col-sm-4">
                                 <strong style="color: #ff6600;">
                                     📞 Teléfono:
@@ -348,6 +387,18 @@ function verDetalle(aprendizId) {
                                     `<a href="tel:${aprendiz.telefono}" class="text-decoration-none" style="color: #008000;">${aprendiz.telefono}</a>` : 
                                     '<span class="text-muted fst-italic">No registrado</span>'
                                 }
+                            </div>
+                        </div>
+                        <hr style="border-color: #008000; opacity: 0.3;">
+                        
+                        <div class="row mb-0">
+                            <div class="col-sm-4">
+                                <strong style="color: #ff6600;">
+                                    📍 Ciudad:
+                                </strong>
+                            </div>
+                            <div class="col-sm-8">
+                                <span>${aprendiz.ciudad}</span>
                             </div>
                         </div>
                     </div>
@@ -362,13 +413,8 @@ function verDetalle(aprendizId) {
                             <div>
                                 <strong>Información del Sistema:</strong>
                                 <p class="mb-0 mt-1">
-                                    Este aprendiz está registrado en el sistema SENA APP.
+                                    Este aprendiz está registrado en el sistema SENA APP. Para ver información completa incluyendo cursos y historial académico, haga clic en "Ver Detalles Completos".
                                 </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>                </p>
                             </div>
                         </div>
                     </div>
@@ -412,6 +458,50 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.paddingLeft = '';
         });
     });
+    
+    // Agregar campo de búsqueda dinámicamente
+    const cardHeader = document.querySelector('.card-header');
+    if (cardHeader && document.querySelector('table')) {
+        const searchContainer = document.createElement('div');
+        searchContainer.className = 'mt-3';
+        searchContainer.innerHTML = `
+            <div class="input-group">
+                <span class="input-group-text" style="background: linear-gradient(135deg, #008000 0%, #ff6600 100%); color: white; border: none;">
+                    <i class="fas fa-search"></i>
+                </span>
+                <input type="text" class="form-control" id="busquedaAprendices" 
+                       placeholder="Buscar por nombre, documento, correo, programa..." 
+                       onkeyup="filtrarAprendices()"
+                       style="border-left: none;">
+            </div>
+        `;
+        cardHeader.appendChild(searchContainer);
+    }
 });
+
+// Funcionalidad de búsqueda en tiempo real
+function filtrarAprendices() {
+    const input = document.getElementById('busquedaAprendices');
+    const filter = input.value.toLowerCase();
+    const table = document.querySelector('table tbody');
+    const rows = table.getElementsByTagName('tr');
+
+    for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName('td');
+        let found = false;
+        
+        for (let j = 0; j < cells.length; j++) {
+            if (cells[j]) {
+                const textValue = cells[j].textContent || cells[j].innerText;
+                if (textValue.toLowerCase().indexOf(filter) > -1) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        
+        rows[i].style.display = found ? '' : 'none';
+    }
+}
 </script>
 {% endblock %}
