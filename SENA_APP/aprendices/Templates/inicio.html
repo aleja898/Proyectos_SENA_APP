@@ -27,16 +27,28 @@
                     </div>
                 </div>
             </div>
+            <!-- Botones en la misma línea -->
             <div class="row mt-4">
-                <div class="col-md-6">
-                    <a class="btn btn-light btn-lg px-4 py-3 me-3" href="{% url 'aprendices:lista_aprendices' %}" role="button">
-                        👥 Ver Aprendices
-                    </a>
+                <div class="col-md-4 mb-3">
+                    <div class="d-grid">
+                        <a class="btn btn-light btn-lg px-4 py-3" href="{% url 'aprendices:lista_aprendices' %}" role="button">
+                            👥 Ver Aprendices
+                        </a>
+                    </div>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <a class="btn btn-outline-light btn-lg px-4 py-3" href="/admin/" role="button">
-                        Panel Admin
-                    </a>
+                <div class="col-md-4 mb-3">
+                    <div class="d-grid">
+                        <a class="btn btn-light btn-lg px-4 py-3" href="{% url 'instructores:lista_instructores' %}" role="button">
+                            👥 Ver instructores
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="d-grid">
+                        <a class="btn btn-outline-light btn-lg px-4 py-3" href="/admin/" role="button">
+                            ⚙️ Panel Admin
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,72 +77,6 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-8">
-                        <p class="card-text fs-6 mb-3">
-                            Consulta y administra todos los aprendices registrados en el sistema.
-                        </p>
-                        <div class="info-item">
-                            <div class="row align-items-center">
-                                <div class="col-8">
-                                    <h6 class="mb-1 fw-bold" style="color: #008000;">Total de Aprendices</h6>
-                                    <small class="text-muted">Estudiantes registrados</small>
-                                </div>
-                                <div class="col-4 text-end">
-                                    <span class="badge badge-sena fs-5 px-3 py-2">{{ total_aprendices }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 text-center">
-                        <div style="font-size: 4rem;">📋</div>
-                    </div>
-                </div>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-                    <a href="{% url 'aprendices:lista_aprendices' %}" class="btn btn-success btn-lg px-4">
-                        Ver Lista
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-lg-6">
-        <div class="card h-100">
-            <div class="card-header d-flex align-items-center">
-                <span style="font-size: 2rem; margin-right: 15px;">⚙️</span>
-                <div>
-                    <h5 class="mb-0">Panel Administrativo</h5>
-                    <small class="opacity-75">Configuración del sistema</small>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <p class="card-text fs-6 mb-3">
-                            Accede al panel de administración completo para gestionar el sistema.
-                        </p>
-                        <div class="info-item">
-                            <h6 class="mb-2 fw-bold" style="color: #ff6600;">Funcionalidades:</h6>
-                            <ul class="list-unstyled mb-0">
-                                <li class="mb-1">✓ Gestión de usuarios</li>
-                                <li class="mb-1">✓ Configuración</li>
-                                <li class="mb-1">✓ Reportes</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-4 text-center">
-                        <div style="font-size: 4rem;">🔧</div>
-                    </div>
-                </div>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-                    <a href="/admin/" class="btn btn-primary btn-lg px-4">
-                        Panel Admin
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div><div class="row">
                     <div class="col-md-8">
                         <p class="card-text fs-6 mb-3">
                             Consulta y administra todos los aprendices registrados en el sistema. 
@@ -199,7 +145,7 @@
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
                     <a href="/admin/" class="btn btn-primary btn-lg px-4">
-                        Ir al Panel Admin
+                        ⚙️ Ir al Panel Admin
                     </a>
                 </div>
             </div>
