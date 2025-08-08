@@ -1,54 +1,74 @@
 from django.http import HttpResponse
 from django.template import loader
-from .models import Aprendiz
-from django.shortcuts import get_object_or_404, render
-from django.db.models import Q
-
+from .models import Aprendiz, Curso
+from django.shortcuts import get_object_or_404
+from instructores.models import Instructor
+from programas.models import Programa
 
 # Create your views here.
 
 def aprendices(request):
-    # Obtener parámetro de búsqueda
-    busqueda = request.GET.get('buscar', '')
-    
-    # Filtrar aprendices si hay búsqueda
-    if busqueda:
-        lista_aprendices = Aprendiz.objects.filter(
-            Q(nombre__icontains=busqueda) | 
-            Q(apellido__icontains=busqueda) | 
-            Q(documento_identidad__icontains=busqueda) |
-            Q(programa__icontains=busqueda)
-        ).order_by('apellido', 'nombre')
-    else:
-        lista_aprendices = Aprendiz.objects.all().order_by('apellido', 'nombre')
-    
+    lista_aprendices = Aprendiz.objects.all().order_by('apellido', 'nombre')
     template = loader.get_template('lista_aprendices.html')
     
     context = {
-        'lista_aprendices': lista_aprendices,
-        'total_aprendices': lista_aprendices.count(),
-        'busqueda': busqueda,
+    'lista_aprendices': lista_aprendices,
+    'total_aprendices': lista_aprendices.count(),
     }
     return HttpResponse(template.render(context, request))
-
-def detalle_aprendiz(request, aprendiz_id):
-    aprendiz = get_object_or_404(Aprendiz, pk=aprendiz_id)
-    return render(request, 'detalle_aprendiz.html', {'aprendiz': aprendiz})
 
 def inicio(request):
     # Estadísticas generales
     total_aprendices = Aprendiz.objects.count()
-    # Aprendices con programas asignados
-    aprendices_con_programa = Aprendiz.objects.exclude(programa__isnull=True).exclude(programa__exact='').count()
-    # Programas únicos
-    programas_unicos = Aprendiz.objects.exclude(programa__isnull=True).exclude(programa__exact='').values_list('programa', flat=True).distinct().count()
-    
+    total_instructores = Instructor.objects.count() 
+    total_programas = Programa.objects.count()
+    total_cursos = Curso.objects.count()
+    cursos_activos = Curso.objects.filter(estado__in=['INI', 'EJE']).count()
     template = loader.get_template('inicio.html')
     
     context = {
         'total_aprendices': total_aprendices,
-        'aprendices_con_programa': aprendices_con_programa,
-        'programas_unicos': programas_unicos,
+        'total_cursos': total_cursos,
+        'cursos_activos': cursos_activos,
+        'total_instructores': total_instructores,
+        'total_programas': total_programas,
+    }
+    
+    return HttpResponse(template.render(context, request))
+
+
+def lista_cursos(request):
+    cursos = Curso.objects.all().order_by('-fecha_inicio')
+    template = loader.get_template('lista_cursos.html')
+    
+    context = {
+        'lista_cursos': cursos,
+        'total_cursos': cursos.count(),
+        'titulo': 'Lista de Cursos'
+    }
+    
+    return HttpResponse(template.render(context, request))
+
+def detalle_curso(request, curso_id):
+    curso = get_object_or_404(Curso, id=curso_id)
+    aprendices_curso = curso.aprendizcurso_set.all()
+    instructores_curso = curso.instructorcurso_set.all()
+    template = loader.get_template('detalle_curso.html')
+    
+    context = {
+        'curso': curso,
+        'aprendices_curso': aprendices_curso,
+        'instructores_curso': instructores_curso,
+    }
+    
+    return HttpResponse(template.render(context, request))
+
+def detalle_aprendiz(request, aprendiz_id):
+    aprendiz = get_object_or_404(Aprendiz, id=aprendiz_id)
+    template = loader.get_template('detalle_aprendiz.html')
+    
+    context = {
+        'aprendiz': aprendiz,
     }
     
     return HttpResponse(template.render(context, request))
