@@ -239,7 +239,8 @@
 <div class="row mt-4">
     <div class="col-12 text-center">
         <div class="d-flex flex-wrap justify-content-center gap-3">
-            <a href="agregar_aprendiz" class="btn btn-primary btn-lg px-4">
+            <!-- CORRECCIÓN: Usar el nombre de la URL correcta -->
+            <a href="{% url 'aprendices:crear_aprendiz' %}" class="btn btn-primary btn-lg px-4">
                 <i class="fas fa-plus me-2"></i>Agregar Nuevo Aprendiz
             </a>
             <button class="btn btn-success btn-lg px-4" onclick="window.print()">

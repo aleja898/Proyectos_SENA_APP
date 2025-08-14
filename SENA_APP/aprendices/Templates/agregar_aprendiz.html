@@ -5,6 +5,24 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
+        <!-- Mostrar mensajes -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Mostrar errores generales del formulario -->
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                <h6>Errores en el formulario:</h6>
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
                 <h3 class="card-title mb-0">
@@ -14,46 +32,108 @@
             <div class="card-body">
                 <form method="post" novalidate>
                     {% csrf_token %}
+                    
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label>{{ form.documento_identidad.label }} <span class="text-danger">*</span></label>
+                            <label class="form-label">{{ form.documento_identidad.label }} <span class="text-danger">*</span></label>
                             {{ form.documento_identidad }}
+                            {% if form.documento_identidad.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.documento_identidad.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         
                         <div class="col-md-6 mb-3">
-                            <label>{{ form.nombre.label }} <span class="text-danger">*</span></label>
+                            <label class="form-label">{{ form.nombre.label }} <span class="text-danger">*</span></label>
                             {{ form.nombre }}
+                            {% if form.nombre.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.nombre.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label>{{ form.apellido.label }} <span class="text-danger">*</span></label>
+                            <label class="form-label">{{ form.apellido.label }} <span class="text-danger">*</span></label>
                             {{ form.apellido }}
+                            {% if form.apellido.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.apellido.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         
                         <div class="col-md-6 mb-3">
-                            <label>{{ form.telefono.label }}</label>
+                            <label class="form-label">{{ form.programa.label }} <span class="text-danger">*</span></label>
+                            {{ form.programa }}
+                            {% if form.programa.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.programa.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.telefono.label }}</label>
                             {{ form.telefono }}
+                            {% if form.telefono.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.telefono.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
-                    </div>
 
-                    <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label>{{ form.correo.label }}</label>
+                            <label class="form-label">{{ form.correo.label }}</label>
                             {{ form.correo }}
-                        </div>
-                        
-                        <div class="col-md-6 mb-3">
-                            <label>{{ form.fecha_nacimiento.label }} <span class="text-danger">*</span></label>
-                            {{ form.fecha_nacimiento }}
+                            {% if form.correo.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.correo.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label>{{ form.ciudad.label }}</label>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.fecha_nacimiento.label }} <span class="text-danger">*</span></label>
+                            {{ form.fecha_nacimiento }}
+                            {% if form.fecha_nacimiento.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.fecha_nacimiento.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.ciudad.label }}</label>
                             {{ form.ciudad }}
+                            {% if form.ciudad.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.ciudad.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -78,11 +158,3 @@
     </div>
 </div>
 {% endblock %}
-
-<!-- <form action="{% url "crear_aprendiz" %}" method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    {{form.documento_identidad}}
-    {{form.nombre}}
-    <button type="submit">Enviar</button>
-</form> -->

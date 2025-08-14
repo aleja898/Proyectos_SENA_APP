@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from django.template import loader
+from django.contrib import messages
+from django.urls import reverse_lazy
 
 from .models import Aprendiz, Curso
 from django.shortcuts import get_object_or_404
@@ -80,9 +82,42 @@ def detalle_aprendiz(request, aprendiz_id):
 class AprendizFormView(generic.FormView):
     template_name = "agregar_aprendiz.html"
     form_class = AprendizForm
-    success_url = "../aprendices/"
+    success_url = reverse_lazy('aprendices:lista_aprendices')  # Usar reverse_lazy para mejor práctica
+    
+    def post(self, request, *args, **kwargs):
+        print("=== POST REQUEST RECIBIDO PARA APRENDIZ ===")
+        print(f"POST data: {request.POST}")
+        return super().post(request, *args, **kwargs)
 
-#Metodo para guardar el Formulario
     def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
+        print("=== FORMULARIO DE APRENDIZ VÁLIDO ===")
+        print(f"Cleaned data: {form.cleaned_data}")
+        
+        try:
+            # El método save() ya está definido en tu AprendizForm
+            form.save()
+            print("=== APRENDIZ GUARDADO EXITOSAMENTE ===")
+            
+            # Verificar que se guardó
+            ultimo_aprendiz = Aprendiz.objects.last()
+            print(f"Último aprendiz guardado: {ultimo_aprendiz.nombre} {ultimo_aprendiz.apellido}")
+            
+            messages.success(self.request, 'Aprendiz agregado exitosamente.')
+            return super().form_valid(form)
+        except Exception as e:
+            print(f"=== ERROR AL GUARDAR APRENDIZ ===")
+            print(f"Error: {str(e)}")
+            
+            import traceback
+            print(f"Traceback completo: {traceback.format_exc()}")
+            
+            messages.error(self.request, f'Error al guardar el aprendiz: {str(e)}')
+            return self.form_invalid(form)
+    
+    def form_invalid(self, form):
+        print("=== FORMULARIO DE APRENDIZ INVÁLIDO ===")
+        print(f"Errores del formulario: {form.errors}")
+        print(f"Errores no de campo: {form.non_field_errors()}")
+        
+        messages.error(self.request, 'Por favor, corrija los errores en el formulario.')
+        return super().form_invalid(form)

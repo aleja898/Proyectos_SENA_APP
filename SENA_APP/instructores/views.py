@@ -40,7 +40,7 @@ def detalle_instructor(request, instructor_id):
 class InstructorFormView(FormView):
     template_name = 'crear_instructor.html'
     form_class = InstructorForm
-    success_url = "../instructores/"
+    success_url = "/instructores/"
 
     def form_valid(self, form):
         # Guardar el instructor
