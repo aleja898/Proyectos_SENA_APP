@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalles del Proyecto - SENA APP{% endblock %}
+    
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/" class="back-link">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'proyectos:lista_proyectos' %}" class="back-link">Lista de Proyectos</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ proyecto.titulo }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header d-flex align-items-center">
+                    <i class="bi bi-diagram-3 me-2"></i>
+                    <h4 class="mb-0">Información del Proyecto</h4>
+                </div>
+                <div class="card-body">
+                    <h2 class="text-primary mb-3">{{ proyecto.titulo }}</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Área Proponente:</strong> {{ proyecto.area_proponente }}</p>
+                            <p><strong>Responsable:</strong> {{ proyecto.responsable }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Presupuesto Estimado:</strong> ${{ proyecto.presupuesto_estimado|floatformat:2 }}</p>
+                            <p><strong>Fecha de Creación:</strong> {{ proyecto.fecha_creacion|date:"d M Y" }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <h5>Descripción y Objetivos</h5>
+                    <p><strong>Descripción Detallada:</strong> {{ proyecto.descripcion_detallada }}</p>
+                    <p><strong>Objetivos Generales:</strong> {{ proyecto.objetivos_generales }}</p>
+                    <p><strong>Objetivos Específicos:</strong> {{ proyecto.objetivos_especificos }}</p>
+                    <hr>
+                    <h5>Alcance, Recursos y Cronograma</h5>
+                    <p><strong>Alcance y Limitaciones:</strong> {{ proyecto.alcance_limitaciones }}</p>
+                    <p><strong>Recursos Necesarios:</strong> {{ proyecto.recursos_necesarios }}</p>
+                    <p><strong>Cronograma Tentativo:</strong> {{ proyecto.cronograma_tentativo }}</p>
+                    <hr>
+                    <h5>Beneficiarios e Indicadores</h5>
+                    <p><strong>Beneficiarios Esperados:</strong> {{ proyecto.beneficiarios_esperados }}</p>
+                    <p><strong>Indicadores de Éxito:</strong> {{ proyecto.indicadores_exito }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

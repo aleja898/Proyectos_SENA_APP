@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block title %}Agregar Proyecto - SENA APP{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                <h6>Errores en el formulario:</h6>
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-tasks"></i> Agregar Nuevo Proyecto
+                </h3>
+            </div>
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-info-circle"></i> Información General
+                            </h5>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.titulo.id_for_label }}" class="form-label">{{ form.titulo.label }} <span class="text-danger">*</span></label>
+                            {{ form.titulo }}
+                            {% if form.titulo.errors %}<div class="text-danger mt-1">{% for error in form.titulo.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.area_proponente.id_for_label }}" class="form-label">{{ form.area_proponente.label }} <span class="text-danger">*</span></label>
+                            {{ form.area_proponente }}
+                            {% if form.area_proponente.errors %}<div class="text-danger mt-1">{% for error in form.area_proponente.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.responsable.id_for_label }}" class="form-label">{{ form.responsable.label }} <span class="text-danger">*</span></label>
+                            {{ form.responsable }}
+                            {% if form.responsable.errors %}<div class="text-danger mt-1">{% for error in form.responsable.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.presupuesto_estimado.id_for_label }}" class="form-label">{{ form.presupuesto_estimado.label }} <span class="text-danger">*</span></label>
+                            {{ form.presupuesto_estimado }}
+                            {% if form.presupuesto_estimado.errors %}<div class="text-danger mt-1">{% for error in form.presupuesto_estimado.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.descripcion_detallada.id_for_label }}" class="form-label">{{ form.descripcion_detallada.label }} <span class="text-danger">*</span></label>
+                            {{ form.descripcion_detallada }}
+                            {% if form.descripcion_detallada.errors %}<div class="text-danger mt-1">{% for error in form.descripcion_detallada.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-bullseye"></i> Objetivos y Alcance
+                            </h5>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.objetivos_generales.id_for_label }}" class="form-label">{{ form.objetivos_generales.label }} <span class="text-danger">*</span></label>
+                            {{ form.objetivos_generales }}
+                            {% if form.objetivos_generales.errors %}<div class="text-danger mt-1">{% for error in form.objetivos_generales.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.objetivos_especificos.id_for_label }}" class="form-label">{{ form.objetivos_especificos.label }} <span class="text-danger">*</span></label>
+                            {{ form.objetivos_especificos }}
+                            {% if form.objetivos_especificos.errors %}<div class="text-danger mt-1">{% for error in form.objetivos_especificos.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.alcance_limitaciones.id_for_label }}" class="form-label">{{ form.alcance_limitaciones.label }} <span class="text-danger">*</span></label>
+                            {{ form.alcance_limitaciones }}
+                            {% if form.alcance_limitaciones.errors %}<div class="text-danger mt-1">{% for error in form.alcance_limitaciones.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-cogs"></i> Recursos, Cronograma y Beneficiarios
+                            </h5>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.cronograma_tentativo.id_for_label }}" class="form-label">{{ form.cronograma_tentativo.label }} <span class="text-danger">*</span></label>
+                            {{ form.cronograma_tentativo }}
+                            {% if form.cronograma_tentativo.errors %}<div class="text-danger mt-1">{% for error in form.cronograma_tentativo.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.recursos_necesarios.id_for_label }}" class="form-label">{{ form.recursos_necesarios.label }} <span class="text-danger">*</span></label>
+                            {{ form.recursos_necesarios }}
+                            {% if form.recursos_necesarios.errors %}<div class="text-danger mt-1">{% for error in form.recursos_necesarios.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.beneficiarios_esperados.id_for_label }}" class="form-label">{{ form.beneficiarios_esperados.label }} <span class="text-danger">*</span></label>
+                            {{ form.beneficiarios_esperados }}
+                            {% if form.beneficiarios_esperados.errors %}<div class="text-danger mt-1">{% for error in form.beneficiarios_esperados.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-check-circle"></i> Indicadores
+                            </h5>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.indicadores_exito.id_for_label }}" class="form-label">{{ form.indicadores_exito.label }} <span class="text-danger">*</span></label>
+                            {{ form.indicadores_exito }}
+                            {% if form.indicadores_exito.errors %}<div class="text-danger mt-1">{% for error in form.indicadores_exito.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="{% url 'proyectos:lista_proyectos' %}" class="btn btn-secondary me-md-2">
+                            <i class="fas fa-times"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> Guardar Proyecto
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="mt-3">
+            <small class="text-muted">
+                <i class="fas fa-info-circle"></i> 
+                Los campos marcados con <span class="text-danger">*</span> son obligatorios.
+            </small>
+        </div>
+    </div>
+</div>
+{% endblock %}

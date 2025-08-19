@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Lista de Proyectos - SENA APP{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Lista de Proyectos</h2>
+            <div>
+                <span class="badge bg-info fs-6">Total: {{ total_proyectos }} Proyectos</span>
+                <a href="{% url 'proyectos:agregar_proyecto' %}" class="btn btn-success ms-2">
+                    Nuevo Proyecto
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if lista_proyectos %}
+<div class="row">
+    <div class="col-12">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Título</th>
+                        <th>Área Proponente</th>
+                        <th>Responsable</th>
+                        <th>Presupuesto</th>
+                        <th>Fecha de Creación</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for proyecto in lista_proyectos %}
+                    <tr>
+                        <td><strong><a href="{% url 'proyectos:detalle_proyecto' proyecto.id %}">{{ proyecto.titulo }}</a></strong></td>
+                        <td>{{ proyecto.area_proponente }}</td>
+                        <td>{{ proyecto.responsable }}</td>
+                        <td>${{ proyecto.presupuesto_estimado|floatformat:2 }}</td>
+                        <td>{{ proyecto.fecha_creacion|date:"d M Y" }}</td>
+                        <td>
+                            <a href="{% url 'admin:proyectos_proyecto_change' proyecto.pk %}" 
+                               class="btn btn-sm btn-outline-primary">
+                                Editar
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">No hay Proyectos registrados</h4>
+            <p>Aún no se han registrado Proyectos en el sistema.</p>
+            <hr>
+            <p class="mb-0">
+                <a href="{% url 'proyectos:agregar_proyecto' %}" class="btn btn-success">
+                    Registrar Primer Proyecto
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
