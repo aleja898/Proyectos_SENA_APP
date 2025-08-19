@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<style>
+    /* Estilos específicos para el módulo de proyectos */
+    .card-stats {
+        border-left: 4px solid #008000;
+        transition: all 0.3s ease;
+    }
+    
+    .card-stats:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 128, 0, 0.15);
+    }
+    
+    .badge-estado-propuesto { background-color: #6c757d; }
+    .badge-estado-en_revision { background-color: #ffc107; color: #000; }
+    .badge-estado-aprobado { background-color: #198754; }
+    .badge-estado-en_ejecucion { background-color: #0d6efd; }
+    .badge-estado-terminado { background-color: #20c997; }
+    .badge-estado-cancelado { background-color: #dc3545; }
+    
+    .proyecto-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        position: relative;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+    
+    .proyecto-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: #008000;
+    }
+    
+    .proyecto-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 128, 0, 0.15);
+    }
+    
+    .progress-custom {
+        height: 8px;
+        border-radius: 10px;
+    }
+    
+    .comment-thread {
+        border-left: 3px solid #008000;
+        padding-left: 1rem;
+        margin-left: 1rem;
+        background: rgba(0, 128, 0, 0.05);
+        border-radius: 0 10px 10px 0;
+    }
+    
+    .alert-proyecto-atrasado {
+        border-left: 4px solid #ff6600;
+        background: linear-gradient(135deg, rgba(255, 102, 0, 0.1) 0%, rgba(253, 127, 40, 0.05) 100%);
+    }
+    
+    .btn-proyecto-primary {
+        background: #008000;
+        border: none;
+        border-radius: 25px;
+        padding: 12px 30px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        color: white;
+    }
+    
+    .btn-proyecto-primary:hover {
+        background: #006600;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 128, 0, 0.3);
+        color: white;
+    }
+    
+    .btn-proyecto-orange {
+        background: #ff6600;
+        border: none;
+        border-radius: 25px;
+        padding: 12px 30px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        color: white;
+    }
+    
+    .btn-proyecto-orange:hover {
+        background: #e55500;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255, 102, 0, 0.3);
+        color: white;
+    }
+    
+    .proyecto-header {
+        background: linear-gradient(135deg, #008000 0%, #ff6600 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 128, 0, 0.3);
+    }
+    
+    .estado-badge {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .metrics-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f5f0 100%);
+        border-left: 6px solid #008000;
+        padding: 25px;
+        border-radius: 0 15px 15px 0;
+        height: 100%;
+        box-shadow: 0 5px 20px rgba(0, 128, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .metrics-card:hover {
+        border-left-color: #ff6600;
+        transform: translateX(5px);
+    }
+    
+    .proyecto-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #008000 0%, #ff6600 100%);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        margin: 0 auto;
+        box-shadow: 0 8px 25px rgba(0, 128, 0, 0.3);
+        border: 3px solid white;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animated-card {
+        animation: fadeInUp 0.8s ease-out;
+    }
+</style>
+{% endblock %}
