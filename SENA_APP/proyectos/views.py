@@ -26,16 +26,18 @@ def detalle_proyecto(request, proyecto_id):
     }
     return HttpResponse(template.render(context, request))
 
-class AgregarProyectoView(FormView):
-    template_name = 'proyectos/agregar_proyecto.html'
-    form_class = ProyectoForm
-    success_url = reverse_lazy('proyectos:lista_proyectos')
-    
-    def form_valid(self, form):
-        form.save()
-        messages.success(self.request, 'Proyecto agregado exitosamente.')
-        return super().form_valid(form)
+def AgregarProyectoView(request):
+        if request.method == 'POST':
+            form = ProyectoForm(request.POST)
+            if form.is_valid():
+                proyecto = form.save()
+                return redirect('proyectos:lista_proyectos')
+        else:
+            form = ProyectoForm()
 
-    def form_invalid(self, form):
-        messages.error(self.request, 'Por favor, corrija los errores en el formulario.')
-        return super().form_invalid(form)
+        template = loader.get_template('proyectos/agregar_proyecto.html')
+        context = {
+            'form': form,
+        }
+        
+        return HttpResponse(template.render(context, request))

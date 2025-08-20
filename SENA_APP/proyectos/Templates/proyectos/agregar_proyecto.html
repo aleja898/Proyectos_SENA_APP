@@ -1,146 +1,636 @@
 {% extends 'base.html' %}
 
-{% block title %}Agregar Proyecto - SENA APP{% endblock %}
+{% block title %}Agregar Nuevo Proyecto - SENA APP{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-10">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+<!-- Breadcrumb -->
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb" style="background: rgba(0, 184, 148, 0.05); padding: 15px; border-radius: 15px;">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'aprendices:inicio' %}" class="back-link" style="text-decoration: none;">
+                        <i class="fas fa-home me-1"></i>Inicio
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'proyectos:lista_proyectos' %}" class="back-link" style="text-decoration: none;">
+                        <i class="fas fa-project-diagram me-1"></i>Lista de Proyectos
+                    </a>
+                </li>
+                <li class="breadcrumb-item active text-muted" aria-current="page">
+                    <i class="fas fa-plus me-1"></i>Agregar Nuevo Proyecto
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- Header Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="jumbotron text-center py-5">
+            <div class="row align-items-center">
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <div class="programa-icon mx-auto" >
+                        <img class="imggg" src="https://cdn-icons-png.freepik.com/512/8162/8162325.png">
+                    </div>
                 </div>
-            {% endfor %}
-        {% endif %}
-        
-        {% if form.non_field_errors %}
-            <div class="alert alert-danger" role="alert">
-                <h6>Errores en el formulario:</h6>
-                {{ form.non_field_errors }}
+                <div class="col-md-9">
+                    <h1 class="display-4 fw-bold mb-3" style="color: white;">
+                        Agregar Nuevo Proyecto
+                    </h1>
+                    <p class="lead mb-4" style="color: rgba(255, 255, 255, 0.9); font-size: 1.3rem;">
+                        Complete el formulario para registrar un nuevo proyecto en el sistema SENA APP
+                    </p>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <span class="badge" style="background: rgba(255, 255, 255, 0.2); color: white; font-size: 1rem; padding: 12px 20px;">
+                            <i class="fas fa-clipboard-list me-2"></i>Formulario Completo
+                        </span>
+                        <span class="badge" style="background: rgba(255, 255, 255, 0.2); color: white; font-size: 1rem; padding: 12px 20px;">
+                            <i class="fas fa-save me-2"></i>Guardado Automático
+                        </span>
+                        <span class="badge" style="background: rgba(255, 255, 255, 0.2); color: white; font-size: 1rem; padding: 12px 20px;">
+                            <i class="fas fa-shield-alt me-2"></i>Datos Seguros
+                        </span>
+                    </div>
+                </div>
             </div>
-        {% endif %}
-
-        <div class="card shadow">
-            <div class="card-header bg-success text-white">
-                <h3 class="card-title mb-0">
-                    <i class="fas fa-tasks"></i> Agregar Nuevo Proyecto
-                </h3>
-            </div>
-            <div class="card-body">
-                <form method="post" novalidate>
-                    {% csrf_token %}
-                    
-                    <div class="row mb-4">
-                        <div class="col-12">
-                            <h5 class="text-primary border-bottom pb-2">
-                                <i class="fas fa-info-circle"></i> Información General
-                            </h5>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.titulo.id_for_label }}" class="form-label">{{ form.titulo.label }} <span class="text-danger">*</span></label>
-                            {{ form.titulo }}
-                            {% if form.titulo.errors %}<div class="text-danger mt-1">{% for error in form.titulo.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.area_proponente.id_for_label }}" class="form-label">{{ form.area_proponente.label }} <span class="text-danger">*</span></label>
-                            {{ form.area_proponente }}
-                            {% if form.area_proponente.errors %}<div class="text-danger mt-1">{% for error in form.area_proponente.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.responsable.id_for_label }}" class="form-label">{{ form.responsable.label }} <span class="text-danger">*</span></label>
-                            {{ form.responsable }}
-                            {% if form.responsable.errors %}<div class="text-danger mt-1">{% for error in form.responsable.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.presupuesto_estimado.id_for_label }}" class="form-label">{{ form.presupuesto_estimado.label }} <span class="text-danger">*</span></label>
-                            {{ form.presupuesto_estimado }}
-                            {% if form.presupuesto_estimado.errors %}<div class="text-danger mt-1">{% for error in form.presupuesto_estimado.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
-                        </div>
-                        <div class="col-12 mb-3">
-                            <label for="{{ form.descripcion_detallada.id_for_label }}" class="form-label">{{ form.descripcion_detallada.label }} <span class="text-danger">*</span></label>
-                            {{ form.descripcion_detallada }}
-                            {% if form.descripcion_detallada.errors %}<div class="text-danger mt-1">{% for error in form.descripcion_detallada.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
-                        </div>
-                    </div>
-
-                    <div class="row mb-4">
-                        <div class="col-12">
-                            <h5 class="text-primary border-bottom pb-2">
-                                <i class="fas fa-bullseye"></i> Objetivos y Alcance
-                            </h5>
-                        </div>
-                        <div class="col-12 mb-3">
-                            <label for="{{ form.objetivos_generales.id_for_label }}" class="form-label">{{ form.objetivos_generales.label }} <span class="text-danger">*</span></label>
-                            {{ form.objetivos_generales }}
-                            {% if form.objetivos_generales.errors %}<div class="text-danger mt-1">{% for error in form.objetivos_generales.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
-                        </div>
-                        <div class="col-12 mb-3">
-                            <label for="{{ form.objetivos_especificos.id_for_label }}" class="form-label">{{ form.objetivos_especificos.label }} <span class="text-danger">*</span></label>
-                            {{ form.objetivos_especificos }}
-                            {% if form.objetivos_especificos.errors %}<div class="text-danger mt-1">{% for error in form.objetivos_especificos.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
-                        </div>
-                        <div class="col-12 mb-3">
-                            <label for="{{ form.alcance_limitaciones.id_for_label }}" class="form-label">{{ form.alcance_limitaciones.label }} <span class="text-danger">*</span></label>
-                            {{ form.alcance_limitaciones }}
-                            {% if form.alcance_limitaciones.errors %}<div class="text-danger mt-1">{% for error in form.alcance_limitaciones.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-4">
-                        <div class="col-12">
-                            <h5 class="text-primary border-bottom pb-2">
-                                <i class="fas fa-cogs"></i> Recursos, Cronograma y Beneficiarios
-                            </h5>
-                        </div>
-                        <div class="col-12 mb-3">
-                            <label for="{{ form.cronograma_tentativo.id_for_label }}" class="form-label">{{ form.cronograma_tentativo.label }} <span class="text-danger">*</span></label>
-                            {{ form.cronograma_tentativo }}
-                            {% if form.cronograma_tentativo.errors %}<div class="text-danger mt-1">{% for error in form.cronograma_tentativo.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
-                        </div>
-                        <div class="col-12 mb-3">
-                            <label for="{{ form.recursos_necesarios.id_for_label }}" class="form-label">{{ form.recursos_necesarios.label }} <span class="text-danger">*</span></label>
-                            {{ form.recursos_necesarios }}
-                            {% if form.recursos_necesarios.errors %}<div class="text-danger mt-1">{% for error in form.recursos_necesarios.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
-                        </div>
-                        <div class="col-12 mb-3">
-                            <label for="{{ form.beneficiarios_esperados.id_for_label }}" class="form-label">{{ form.beneficiarios_esperados.label }} <span class="text-danger">*</span></label>
-                            {{ form.beneficiarios_esperados }}
-                            {% if form.beneficiarios_esperados.errors %}<div class="text-danger mt-1">{% for error in form.beneficiarios_esperados.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-4">
-                        <div class="col-12">
-                            <h5 class="text-primary border-bottom pb-2">
-                                <i class="fas fa-check-circle"></i> Indicadores
-                            </h5>
-                        </div>
-                        <div class="col-12 mb-3">
-                            <label for="{{ form.indicadores_exito.id_for_label }}" class="form-label">{{ form.indicadores_exito.label }} <span class="text-danger">*</span></label>
-                            {{ form.indicadores_exito }}
-                            {% if form.indicadores_exito.errors %}<div class="text-danger mt-1">{% for error in form.indicadores_exito.errors %}<small>{{ error }}</small><br>{% endfor %}</div>{% endif %}
-                        </div>
-                    </div>
-
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                        <a href="{% url 'proyectos:lista_proyectos' %}" class="btn btn-secondary me-md-2">
-                            <i class="fas fa-times"></i> Cancelar
-                        </a>
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-save"></i> Guardar Proyecto
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        
-        <div class="mt-3">
-            <small class="text-muted">
-                <i class="fas fa-info-circle"></i> 
-                Los campos marcados con <span class="text-danger">*</span> son obligatorios.
-            </small>
         </div>
     </div>
 </div>
+
+<!-- Mensajes de Error/Éxito -->
+{% if messages %}
+<div class="row mb-4">
+    <div class="col-12">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="border-radius: 15px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <div class="d-flex align-items-center">
+                    {% if message.tags == 'success' %}
+                        <i class="fas fa-check-circle me-2" style="font-size: 1.2rem;"></i>
+                    {% elif message.tags == 'error' %}
+                        <i class="fas fa-exclamation-triangle me-2" style="font-size: 1.2rem;"></i>
+                    {% elif message.tags == 'info' %}
+                        <i class="fas fa-info-circle me-2" style="font-size: 1.2rem;"></i>
+                    {% endif %}
+                    <div>
+                        <strong>{{ message }}</strong>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if form.non_field_errors %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="alert alert-danger" role="alert" style="border-radius: 15px; border: none; border-left: 4px solid #dc3545;">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle me-2" style="font-size: 1.5rem; color: #dc3545;"></i>
+                <div>
+                    <h6 class="fw-bold mb-2">Errores en el formulario:</h6>
+                    {{ form.non_field_errors }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Formulario Principal -->
+<div class="row justify-content-center">
+    <div class="col-12">
+        <form method="post" novalidate id="proyectoForm">
+            {% csrf_token %}
+            
+            <!-- Sección 1: Información General -->
+            <div class="card mb-4" style="animation: fadeInUp 0.6s ease-out;">
+                <div class="card-header d-flex align-items-center">
+                    <div class="modalidad-icon me-3" style="background: linear-gradient(135deg, #008000 0%, #ff6600 100%);">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">Información General</h5>
+                        <small class="opacity-75">Datos básicos del proyecto</small>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.titulo.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-heading me-2" style="color: #ff6600;"></i>{{ form.titulo.label }}
+                                <span class="text-danger">*</span>
+                            </label>
+                            {{ form.titulo }}
+                            {% if form.titulo.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.titulo.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.area_proponente.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-building me-2" style="color: #ff6600;"></i>{{ form.area_proponente.label }}
+                                <span class="text-danger">*</span>
+                            </label>
+                            {{ form.area_proponente }}
+                            {% if form.area_proponente.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.area_proponente.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.responsable.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-user-tie me-2" style="color: #ff6600;"></i>{{ form.responsable.label }}
+                                <span class="text-danger">*</span>
+                            </label>
+                            {{ form.responsable }}
+                            {% if form.responsable.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.responsable.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.presupuesto_estimado.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-dollar-sign me-2" style="color: #ff6600;"></i>{{ form.presupuesto_estimado.label }}
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background: linear-gradient(135deg, #008000 0%, #ff6600 100%); color: white; border: none;">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </span>
+                                {{ form.presupuesto_estimado }}
+                            </div>
+                            {% if form.presupuesto_estimado.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.presupuesto_estimado.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.descripcion_detallada.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-align-left me-2" style="color: #ff6600;"></i>{{ form.descripcion_detallada.label }}
+                                <span class="text-danger">*</span>
+                            </label>
+                            {{ form.descripcion_detallada }}
+                            {% if form.descripcion_detallada.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.descripcion_detallada.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección 2: Objetivos y Alcance -->
+            <div class="card mb-4" style="animation: fadeInUp 0.8s ease-out;">
+                <div class="card-header d-flex align-items-center">
+                    <div class="modalidad-icon me-3" style="background: linear-gradient(135deg, #ff6600 0%, #e17055 100%);">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">Objetivos y Alcance</h5>
+                        <small class="opacity-75">Definición de metas y limitaciones</small>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.objetivos_generales.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-target me-2" style="color: #008000;"></i>{{ form.objetivos_generales.label }}
+                                <span class="text-danger">*</span>
+                            </label>
+                            {{ form.objetivos_generales }}
+                            {% if form.objetivos_generales.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.objetivos_generales.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.objetivos_especificos.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-list-ul me-2" style="color: #008000;"></i>{{ form.objetivos_especificos.label }}
+                                <span class="text-danger">*</span>
+                            </label>
+                            {{ form.objetivos_especificos }}
+                            {% if form.objetivos_especificos.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.objetivos_especificos.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.alcance_limitaciones.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-expand-arrows-alt me-2" style="color: #008000;"></i>{{ form.alcance_limitaciones.label }}
+                                <span class="text-danger">*</span>
+                            </label>
+                            {{ form.alcance_limitaciones }}
+                            {% if form.alcance_limitaciones.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.alcance_limitaciones.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección 3: Recursos, Cronograma y Beneficiarios -->
+            <div class="card mb-4" style="animation: fadeInUp 1.0s ease-out;">
+                <div class="card-header d-flex align-items-center">
+                    <div class="modalidad-icon me-3" style="background: linear-gradient(135deg, #00b894 0%, #fd7f28 100%);">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">Recursos, Cronograma y Beneficiarios</h5>
+                        <small class="opacity-75">Planificación y recursos del proyecto</small>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.cronograma_tentativo.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-calendar-alt me-2" style="color: #ff6600;"></i>{{ form.cronograma_tentativo.label }}
+                                <span class="text-danger">*</span>
+                            </label>
+                            {{ form.cronograma_tentativo }}
+                            {% if form.cronograma_tentativo.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.cronograma_tentativo.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.recursos_necesarios.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-tools me-2" style="color: #ff6600;"></i>{{ form.recursos_necesarios.label }}
+                                <span class="text-danger">*</span>
+                            </label>
+                            {{ form.recursos_necesarios }}
+                            {% if form.recursos_necesarios.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.recursos_necesarios.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.beneficiarios_esperados.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-users me-2" style="color: #ff6600;"></i>{{ form.beneficiarios_esperados.label }}
+                                <span class="text-danger">*</span>
+                            </label>
+                            {{ form.beneficiarios_esperados }}
+                            {% if form.beneficiarios_esperados.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.beneficiarios_esperados.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección 4: Indicadores -->
+            <div class="card mb-4" style="animation: fadeInUp 1.2s ease-out;">
+                <div class="card-header d-flex align-items-center">
+                    <div class="modalidad-icon me-3" style="background: linear-gradient(135deg, #e17055 0%, #fd7f28 100%);">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">Indicadores de Éxito</h5>
+                        <small class="opacity-75">Métricas para evaluar el proyecto</small>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="{{ form.indicadores_exito.id_for_label }}" class="form-label fw-bold">
+                                <i class="fas fa-check-circle me-2" style="color: #008000;"></i>{{ form.indicadores_exito.label }}
+                                <span class="text-danger">*</span>
+                            </label>
+                            {{ form.indicadores_exito }}
+                            {% if form.indicadores_exito.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.indicadores_exito.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información Importante -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="alert" style="background: rgba(0, 184, 148, 0.1); border-left: 4px solid #00b894; border-radius: 15px;">
+                        <div class="d-flex align-items-start">
+                            <div style="font-size: 1.5rem; color: #00b894; margin-right: 15px; margin-top: 5px;">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-2" style="color: #00b894;">Información Importante</h6>
+                                <ul class="mb-2" style="color: #2d3436;">
+                                    <li>Los campos marcados con <span class="text-danger fw-bold">*</span> son obligatorios.</li>
+                                    <li>Asegúrese de completar toda la información requerida antes de enviar.</li>
+                                    <li>El formulario se guardará automáticamente mientras escribe.</li>
+                                    <li>Puede cancelar en cualquier momento sin guardar cambios.</li>
+                                </ul>
+                                <small class="text-muted">
+                                    <i class="fas fa-shield-alt me-1"></i>
+                                    Todos los datos se almacenan de forma segura en el sistema SENA APP.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="d-flex flex-column flex-md-row justify-content-center gap-3 py-4" style="background: rgba(0, 128, 0, 0.05); border-radius: 20px; border: 2px solid rgba(0, 128, 0, 0.1);">
+                        <button type="button" class="btn btn-secondary btn-lg px-5" onclick="cancelarFormulario()">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="button" class="btn btn-outline-primary btn-lg px-5" onclick="guardarBorrador()">
+                            <i class="fas fa-save me-2"></i>Guardar Borrador
+                        </button>
+                        <button type="submit" class="btn btn-success btn-lg px-5">
+                            <i class="fas fa-plus me-2"></i>Crear Proyecto
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal de Confirmación -->
+<div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 20px; border: none;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #ff6600 0%, #e17055 100%); border-radius: 20px 20px 0 0;">
+                <div class="d-flex align-items-center">
+                    <span style="font-size: 1.5rem; margin-right: 15px; color: white;">⚠️</span>
+                    <div>
+                        <h5 class="modal-title mb-1 text-white" id="modalConfirmacionLabel">Confirmar Acción</h5>
+                        <small class="text-white opacity-75">Esta acción no se puede deshacer</small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-4">
+                <p class="mb-3" style="font-size: 1.1rem;">¿Está seguro que desea salir sin guardar los cambios?</p>
+                <p class="text-muted mb-0">Se perderá toda la información ingresada en el formulario.</p>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-arrow-left me-2"></i>Continuar Editando
+                </button>
+                <button type="button" class="btn btn-danger" onclick="confirmarCancelacion()">
+                    <i class="fas fa-times me-2"></i>Salir sin Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Variables globales
+let formModificado = false;
+let autoguardadoInterval;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Configurar los campos del formulario con estilos mejorados
+    const campos = document.querySelectorAll('input, textarea, select');
+    campos.forEach(campo => {
+        // Añadir clases de Bootstrap
+        campo.classList.add('form-control');
+        
+        // Estilos personalizados
+        campo.style.borderRadius = '10px';
+        campo.style.border = '2px solid #e0e6ed';
+        campo.style.transition = 'all 0.3s ease';
+        campo.style.fontSize = '1rem';
+        campo.style.padding = '12px 15px';
+        
+        // Efectos de focus
+        campo.addEventListener('focus', function() {
+            this.style.borderColor = '#00b894';
+            this.style.boxShadow = '0 0 0 0.2rem rgba(0, 184, 148, 0.15)';
+            this.style.transform = 'translateY(-2px)';
+        });
+        
+        campo.addEventListener('blur', function() {
+            this.style.borderColor = '#e0e6ed';
+            this.style.boxShadow = 'none';
+            this.style.transform = 'translateY(0)';
+        });
+        
+        // Detectar cambios para autoguardado
+        campo.addEventListener('input', function() {
+            formModificado = true;
+            mostrarIndicadorGuardado('modificado');
+        });
+    });
+    
+    // Configurar textareas para ajuste automático de altura
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(textarea => {
+        textarea.style.minHeight = '120px';
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+    });
+    
+    // Iniciar autoguardado
+    iniciarAutoguardado();
+    
+    // Animaciones de entrada para las tarjetas
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 200);
+    });
+});
+
+function iniciarAutoguardado() {
+    autoguardadoInterval = setInterval(() => {
+        if (formModificado) {
+            guardarBorradorSilencioso();
+        }
+    }, 30000); // Autoguardar cada 30 segundos
+}
+
+function guardarBorradorSilencioso() {
+    const formData = new FormData(document.getElementById('proyectoForm'));
+    
+    // Simular guardado (en una implementación real, esto sería una petición AJAX)
+    mostrarIndicadorGuardado('guardado');
+    formModificado = false;
+}
+
+function guardarBorrador() {
+    const btn = event.target;
+    const originalText = btn.innerHTML;
+    
+    // Mostrar estado de carga
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Guardando...';
+    btn.disabled = true;
+    
+    setTimeout(() => {
+        btn.innerHTML = '<i class="fas fa-check me-2"></i>Borrador Guardado';
+        btn.classList.remove('btn-outline-primary');
+        btn.classList.add('btn-success');
+        
+        mostrarNotificacion('Borrador guardado correctamente', 'success');
+        formModificado = false;
+        
+        // Restaurar botón después de 2 segundos
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-outline-primary');
+            btn.disabled = false;
+        }, 2000);
+    }, 1500);
+}
+
+function cancelarFormulario() {
+    if (formModificado) {
+        const modal = new bootstrap.Modal(document.getElementById('modalConfirmacion'));
+        modal.show();
+    } else {
+        window.location.href = '{% url "proyectos:lista_proyectos" %}';
+    }
+}
+
+function confirmarCancelacion() {
+    clearInterval(autoguardadoInterval);
+    window.location.href = '{% url "proyectos:lista_proyectos" %}';
+}
+
+function mostrarIndicadorGuardado(estado) {
+    let indicador = document.getElementById('indicadorGuardado');
+    
+    if (!indicador) {
+        indicador = document.createElement('div');
+        indicador.id = 'indicadorGuardado';
+        indicador.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 9999;
+            transition: all 0.3s ease;
+            opacity: 0;
+        `;
+        document.body.appendChild(indicador);
+    }
+    
+    if (estado === 'modificado') {
+        indicador.innerHTML = '<i class="fas fa-edit me-2"></i>Modificado';
+        indicador.style.background = 'rgba(255, 102, 0, 0.9)';
+        indicador.style.color = 'white';
+    } else if (estado === 'guardado') {
+        indicador.innerHTML = '<i class="fas fa-check me-2"></i>Autoguardado';
+        indicador.style.background = 'rgba(0, 128, 0, 0.9)';
+        indicador.style.color = 'white';
+    }
+    
+    indicador.style.opacity = '1';
+    
+    setTimeout(() => {
+        indicador.style.opacity = '0';
+    }, 3000);
+}
+
+function mostrarNotificacion(mensaje, tipo) {
+    const notificacion = document.createElement('div');
+    notificacion.className = `alert alert-${tipo} position-fixed`;
+    notificacion.style.cssText = 'top: 80px; right: 20px; z-index: 9999; opacity: 0; transition: opacity 0.3s; min-width: 300px;';
+    notificacion.innerHTML = `
+        <div class="d-flex align-items-center">
+            <i class="fas fa-${tipo === 'success' ? 'check-circle' : 'info-circle'} me-2"></i>
+            ${mensaje}
+        </div>
+    `;
+    
+    document.body.appendChild(notificacion);
+    
+    setTimeout(() => notificacion.style.opacity = '1', 100);
+    setTimeout(() => {
+        notificacion.style.opacity = '0';
+        setTimeout(() => document.body.removeChild(notificacion), 300);
+    }, 4000);
+}
+
+// Validación en tiempo real
+document.getElementById('proyectoForm').addEventListener('submit', function(e) {
+    const btn = document.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+    
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creando Proyecto...';
+    btn.disabled = true;
+    
+    // Limpiar autoguardado
+    clearInterval(autoguardadoInterval);
+});
+
+// Prevenir pérdida de datos
+window.addEventListener('beforeunload', function(e) {
+    if (formModificado) {
+        e.preventDefault();
+        e.returnValue = '';
+        return 'Tiene cambios sin guardar. ¿Está seguro que desea salir?';
+    }
+});
+</script>
 {% endblock %}

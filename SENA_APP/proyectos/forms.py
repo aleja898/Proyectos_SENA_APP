@@ -1,40 +1,35 @@
 from django import forms
 from .models import Proyecto
 
-class ProyectoForm(forms.ModelForm):
-    class Meta:
-        model = Proyecto
-        fields = [
-            'titulo', 'descripcion_detallada', 'area_proponente', 'responsable',
-            'objetivos_generales', 'objetivos_especificos', 'alcance_limitaciones',
-            'presupuesto_estimado', 'cronograma_tentativo', 'recursos_necesarios',
-            'beneficiarios_esperados', 'indicadores_exito'
-        ]
-        widgets = {
-            'titulo': forms.TextInput(attrs={'class': 'form-control'}),
-            'descripcion_detallada': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
-            'area_proponente': forms.TextInput(attrs={'class': 'form-control'}),
-            'responsable': forms.TextInput(attrs={'class': 'form-control'}),
-            'objetivos_generales': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'objetivos_especificos': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'alcance_limitaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'presupuesto_estimado': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
-            'cronograma_tentativo': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'recursos_necesarios': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'beneficiarios_esperados': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'indicadores_exito': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-        }
-        labels = {
-            'titulo': 'Título del Proyecto',
-            'descripcion_detallada': 'Descripción detallada',
-            'area_proponente': 'Área proponente',
-            'responsable': 'Responsable del proyecto',
-            'objetivos_generales': 'Objetivos generales',
-            'objetivos_especificos': 'Objetivos específicos',
-            'alcance_limitaciones': 'Alcance y limitaciones',
-            'presupuesto_estimado': 'Presupuesto estimado',
-            'cronograma_tentativo': 'Cronograma tentativo',
-            'recursos_necesarios': 'Recursos necesarios',
-            'beneficiarios_esperados': 'Beneficiarios esperados',
-            'indicadores_exito': 'Indicadores de éxito'
-        }
+class ProyectoForm(forms.Form):
+    titulo = forms.CharField(max_length=255, label="Título del Proyecto")
+    descripcion_detallada = forms.CharField(label="Descripción detallada")
+    area_proponente = forms.CharField(max_length=255, label="Área proponente")
+    responsable = forms.CharField(max_length=255, label="Responsable del proyecto")
+    objetivos_generales = forms.CharField(label="Objetivos generales")
+    objetivos_especificos = forms.CharField(label="Objetivos específicos")
+    alcance_limitaciones = forms.CharField(label="Alcance y limitaciones")
+    presupuesto_estimado = forms.DecimalField(max_digits=10, decimal_places=2, label="Presupuesto estimado")
+    cronograma_tentativo = forms.CharField(label="Cronograma tentativo")
+    recursos_necesarios = forms.CharField(label="Recursos necesarios")
+    beneficiarios_esperados = forms.CharField(label="Beneficiarios esperados")
+    indicadores_exito = forms.CharField(label="Indicadores de éxito")
+    fecha_creacion = forms.DateField( label="Fecha de Creación")
+
+    def save(self):
+        proyecto = Proyecto.objects.create(
+            titulo=self.cleaned_data['titulo'],
+            descripcion_detallada=self.cleaned_data['descripcion_detallada'],
+            area_proponente=self.cleaned_data['area_proponente'],
+            responsable=self.cleaned_data['responsable'],
+            objetivos_generales=self.cleaned_data['objetivos_generales'],
+            objetivos_especificos=self.cleaned_data['objetivos_especificos'],
+            alcance_limitaciones=self.cleaned_data['alcance_limitaciones'],
+            presupuesto_estimado=self.cleaned_data['presupuesto_estimado'],
+            cronograma_tentativo=self.cleaned_data['cronograma_tentativo'],
+            recursos_necesarios=self.cleaned_data['recursos_necesarios'],
+            beneficiarios_esperados=self.cleaned_data['beneficiarios_esperados'],
+            indicadores_exito=self.cleaned_data['indicadores_exito'],
+            fecha_creacion=self.cleaned_data['fecha_creacion'],
+        )
+        return proyecto

@@ -8,7 +8,7 @@ class Proyecto(models.Model):
     objetivos_generales = models.TextField(verbose_name="Objetivos generales")
     objetivos_especificos = models.TextField(verbose_name="Objetivos específicos")
     alcance_limitaciones = models.TextField(verbose_name="Alcance y limitaciones")
-    presupuesto_estimado = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Presupuesto estimado")
+    presupuesto_estimado = models.DecimalField(max_digits=100, decimal_places=2, verbose_name="Presupuesto estimado")
     cronograma_tentativo = models.TextField(verbose_name="Cronograma tentativo")
     recursos_necesarios = models.TextField(verbose_name="Recursos necesarios")
     beneficiarios_esperados = models.TextField(verbose_name="Beneficiarios esperados")

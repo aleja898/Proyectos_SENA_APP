@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Detalles Instructor - SENA APP{% endblock %}
+{% block title %}Detalles de {{ instructor.nombre_completo }} - SENA APP{% endblock %}
 
 {% block content %}
 <div class="container-fluid py-4">
@@ -9,9 +9,8 @@
         <div class="col-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/" class="back-link">Inicio</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'instructores:lista_instructores' %}" class="back-link">Lista Instructores</a>
-                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'aprendices:inicio' %}" class="back-link">🏠 Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'instructores:lista_instructores' %}" class="back-link">👥 Lista Instructores</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ instructor.nombre_completo }}</li>
                 </ol>
             </nav>
@@ -24,122 +23,264 @@
             <div class="card shadow-sm">
                 <div class="card-header d-flex align-items-center">
                     <i class="bi bi-person-workspace me-2"></i>
-                    <h4 class="mb-0">Perfil del Instructor</h4>
+                    <h4 class="mb-0">Perfil Completo del Instructor</h4>
+                    <div class="ms-auto">
+                        {% if instructor.activo %}
+                        <span class="badge bg-success fs-6 px-3 py-2">
+                            <i class="bi bi-check-circle me-1"></i>ACTIVO
+                        </span>
+                        {% else %}
+                        <span class="badge bg-danger fs-6 px-3 py-2">
+                            <i class="bi bi-x-circle me-1"></i>INACTIVO
+                        </span>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        <!-- Avatar y datos básicos -->
                         <div class="col-md-3 text-center">
                             <div class="instructor-avatar mb-3">
                                 {{ instructor.nombre.0 }}{{ instructor.apellido.0 }}
                             </div>
-                            <h4 class="text-primary">{{ instructor.nombre_completo }}</h4>
-                            <div class="mb-3">
-                                {% if instructor.activo %}
-                                <span class="badge bg-success">
-                                    <i class="bi bi-check-circle me-1"></i>Activo
-                                </span>
-                                {% else %}
-                                <span class="badge bg-danger">
-                                    <i class="bi bi-x-circle me-1"></i>Inactivo
-                                </span>
+                            <h4 class="text-primary mb-2">{{ instructor.nombre_completo }}</h4>
+                            <div class="badge badge-sena mb-3 fs-6 px-3 py-2">
+                                ID: {{ instructor.id }}
+                            </div>
+                            <div class="d-grid gap-2">
+                                {% if instructor.correo %}
+                                <a href="mailto:{{ instructor.correo }}" class="btn btn-outline-success btn-sm">
+                                    <i class="bi bi-envelope me-2"></i>Enviar Email
+                                </a>
+                                {% endif %}
+                                {% if instructor.telefono %}
+                                <a href="tel:{{ instructor.telefono }}" class="btn btn-outline-success btn-sm">
+                                    <i class="bi bi-telephone me-2"></i>Llamar
+                                </a>
                                 {% endif %}
                             </div>
                         </div>
+
+                        <!-- Información detallada -->
                         <div class="col-md-9">
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="info-item">
-                                        <h6 class="text-muted mb-2">
-                                            <i class="bi bi-card-text me-2"></i><strong>Documento de Identidad</strong>
+                                <!-- Información Personal -->
+                                <div class="col-lg-6 mb-4">
+                                    <div class="info-item h-100">
+                                        <h6 class="text-muted mb-3">
+                                            <i class="bi bi-person-vcard me-2"></i><strong>Información Personal</strong>
                                         </h6>
-                                        <p class="mb-0">{{ instructor.get_tipo_documento_display }}</p>
-                                        <p class="mb-0">{{ instructor.documento_identidad }}</p>
+                                        <div class="row mb-2">
+                                            <div class="col-5">
+                                                <strong style="color: #ff6600;">Documento:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                {{ instructor.get_tipo_documento_display }} - {{ instructor.documento_identidad }}
+                                            </div>
+                                        </div>
+                                        <hr class="my-2" style="border-color: #008000; opacity: 0.3;">
+                                        
+                                        <div class="row mb-2">
+                                            <div class="col-5">
+                                                <strong style="color: #ff6600;">Nombres:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                {{ instructor.nombre }}
+                                            </div>
+                                        </div>
+                                        <hr class="my-2" style="border-color: #008000; opacity: 0.3;">
+                                        
+                                        <div class="row mb-2">
+                                            <div class="col-5">
+                                                <strong style="color: #ff6600;">Apellidos:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                {{ instructor.apellido }}
+                                            </div>
+                                        </div>
+                                        <hr class="my-2" style="border-color: #008000; opacity: 0.3;">
+                                        
+                                        <div class="row mb-0">
+                                            <div class="col-5">
+                                                <strong style="color: #ff6600;">Nacimiento:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                {% if instructor.fecha_nacimiento %}
+                                                    {{ instructor.fecha_nacimiento|date:"d/m/Y" }}
+                                                    <br><small class="text-muted">
+                                                        {% now "Y" as current_year %}
+                                                        Edad: {{ current_year|add:"-"|add:instructor.fecha_nacimiento.year }} años aprox.
+                                                    </small>
+                                                {% else %}
+                                                    <span class="text-muted fst-italic">No registrada</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="info-item">
-                                        <h6 class="text-muted mb-2">
-                                            <i class="bi bi-mortarboard me-2"></i><strong>Nivel Educativo</strong>
+
+                                <!-- Información de Contacto -->
+                                <div class="col-lg-6 mb-4">
+                                    <div class="info-item h-100">
+                                        <h6 class="text-muted mb-3">
+                                            <i class="bi bi-telephone-plus me-2"></i><strong>Información de Contacto</strong>
                                         </h6>
-                                        <p class="mb-0">{{ instructor.get_nivel_educativo_display }}
-                                        </p>
-                                        {% if instructor.especialidad %}
-                                        <small class="text-success">
-                                            <i class="bi bi-award me-1"></i>{{ instructor.especialidad }}
-                                        </small>
-                                        {% endif %}
+                                        <div class="row mb-2">
+                                            <div class="col-4">
+                                                <strong style="color: #ff6600;">Correo:</strong>
+                                            </div>
+                                            <div class="col-8">
+                                                {% if instructor.correo %}
+                                                    <a href="mailto:{{ instructor.correo }}" class="text-decoration-none" style="color: #008000;">
+                                                        {{ instructor.correo }}
+                                                    </a>
+                                                {% else %}
+                                                    <span class="text-muted fst-italic">No registrado</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <hr class="my-2" style="border-color: #008000; opacity: 0.3;">
+                                        
+                                        <div class="row mb-2">
+                                            <div class="col-4">
+                                                <strong style="color: #ff6600;">Teléfono:</strong>
+                                            </div>
+                                            <div class="col-8">
+                                                {% if instructor.telefono %}
+                                                    <a href="tel:{{ instructor.telefono }}" class="text-decoration-none" style="color: #008000;">
+                                                        {{ instructor.telefono }}
+                                                    </a>
+                                                {% else %}
+                                                    <span class="text-muted fst-italic">No registrado</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <hr class="my-2" style="border-color: #008000; opacity: 0.3;">
+                                        
+                                        <div class="row mb-2">
+                                            <div class="col-4">
+                                                <strong style="color: #ff6600;">Ciudad:</strong>
+                                            </div>
+                                            <div class="col-8">
+                                                {% if instructor.ciudad %}
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="bi bi-geo-alt-fill text-success me-2"></i>
+                                                        {{ instructor.ciudad }}
+                                                    </div>
+                                                {% else %}
+                                                    <span class="text-muted fst-italic">No registrada</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <hr class="my-2" style="border-color: #008000; opacity: 0.3;">
+                                        
+                                        <div class="row mb-0">
+                                            <div class="col-4">
+                                                <strong style="color: #ff6600;">Dirección:</strong>
+                                            </div>
+                                            <div class="col-8">
+                                                {% if instructor.direccion %}
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="bi bi-house-fill text-warning me-2"></i>
+                                                        {{ instructor.direccion }}
+                                                    </div>
+                                                {% else %}
+                                                    <span class="text-muted fst-italic">No registrada</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Información Académica y Profesional -->
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="info-item">
-                                        <h6 class="text-muted mb-2">
-                                            <i class="bi bi-envelope me-2"></i><strong>Información de Contacto</strong>
+                                <div class="col-lg-6 mb-4">
+                                    <div class="info-item h-100">
+                                        <h6 class="text-muted mb-3">
+                                            <i class="bi bi-mortarboard me-2"></i><strong>Información Académica</strong>
                                         </h6>
-                                        <p class="mb-1">
-                                            <i class="bi bi-envelope-fill text-primary me-2"></i>
-                                            <a href="mailto:{{ instructor.correo }}">{{ instructor.correo }}</a>
-                                        </p>
-                                        {% if instructor.telefono %}
-                                        <p class="mb-0">
-                                            <i class="bi bi-telephone-fill text-success me-2"></i>
-                                            {{ instructor.telefono }}
-                                        </p>
-                                        {% endif %}
+                                        <div class="row mb-2">
+                                            <div class="col-5">
+                                                <strong style="color: #ff6600;">Nivel Educativo:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                {% if instructor.nivel_educativo %}
+                                                    <span class="badge bg-info px-2 py-1">
+                                                        {{ instructor.get_nivel_educativo_display }}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="text-muted fst-italic">No especificado</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <hr class="my-2" style="border-color: #008000; opacity: 0.3;">
+                                        
+                                        <div class="row mb-0">
+                                            <div class="col-5">
+                                                <strong style="color: #ff6600;">Especialidad:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                {% if instructor.especialidad %}
+                                                    <span class="badge bg-success px-2 py-1">
+                                                        <i class="bi bi-award me-1"></i>{{ instructor.especialidad }}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="text-muted fst-italic">No especificada</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="info-item">
-                                        <h6 class="text-muted mb-2">
-                                            <i class="bi bi-geo-alt me-2"></i><strong>Ubicación</strong>
+
+                                <div class="col-lg-6 mb-4">
+                                    <div class="info-item h-100">
+                                        <h6 class="text-muted mb-3">
+                                            <i class="bi bi-briefcase me-2"></i><strong>Información Profesional</strong>
                                         </h6>
-                                        {% if instructor.ciudad %}
-                                        <p class="mb-1">
-                                            <i class="bi bi-building text-info me-2"></i>{{ instructor.ciudad }}
-                                        </p>
-                                        {% endif %}
-                                        {% if instructor.direccion %}
-                                        <p class="mb-0">
-                                            <i class="bi bi-house text-warning me-2"></i>{{ instructor.direccion }}
-                                        </p>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="info-item">
-                                        <h6 class="text-muted mb-2">
-                                            <i class="bi bi-calendar-event me-2"></i><strong>Información Personal</strong>
-                                        </h6>
-                                        {% if instructor.fecha_nacimiento %}
-                                        <p class="mb-1">
-                                            <i class="bi bi-cake text-danger me-2"></i>
-                                            Nacimiento: {{ instructor.fecha_nacimiento|date:"d/m/Y" }}
-                                        </p>
-                                        {% endif %}
-                                        <p class="mb-0">
-                                            <i class="bi bi-calendar-plus text-success me-2"></i>
-                                            Registro: {{ instructor.fecha_registro|date:"d/m/Y" }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="info-item">
-                                        <h6 class="text-muted mb-2">
-                                            <i class="bi bi-graph-up me-2"></i><strong>Experiencia</strong>
-                                        </h6>
-                                        <p class="mb-1">
-                                            <i class="bi bi-clock text-primary me-2"></i>
-                                            {{ instructor.anos_experiencia }} años de experiencia
-                                        </p>
-                                        {% if instructor.fecha_vinculacion %}
-                                        <p class="mb-0">
-                                            <i class="bi bi-briefcase text-info me-2"></i>
-                                            Vinculación: {{ instructor.fecha_vinculacion|date:"d/m/Y" }}
-                                        </p>
-                                        {% endif %}
+                                        <div class="row mb-2">
+                                            <div class="col-5">
+                                                <strong style="color: #ff6600;">Experiencia:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                {% if instructor.anos_experiencia %}
+                                                    <i class="bi bi-clock text-primary me-2"></i>
+                                                    {{ instructor.anos_experiencia }} años
+                                                {% else %}
+                                                    <span class="text-muted fst-italic">No especificada</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <hr class="my-2" style="border-color: #008000; opacity: 0.3;">
+                                        
+                                        <div class="row mb-2">
+                                            <div class="col-5">
+                                                <strong style="color: #ff6600;">Vinculación:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                {% if instructor.fecha_vinculacion %}
+                                                    <i class="bi bi-calendar-plus text-success me-2"></i>
+                                                    {{ instructor.fecha_vinculacion|date:"d/m/Y" }}
+                                                {% else %}
+                                                    <span class="text-muted fst-italic">No registrada</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <hr class="my-2" style="border-color: #008000; opacity: 0.3;">
+                                        
+                                        <div class="row mb-0">
+                                            <div class="col-5">
+                                                <strong style="color: #ff6600;">Registro:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                {% if instructor.fecha_registro %}
+                                                    <i class="bi bi-calendar-check text-info me-2"></i>
+                                                    {{ instructor.fecha_registro|date:"d/m/Y" }}
+                                                {% else %}
+                                                    <span class="text-muted fst-italic">No registrada</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -150,6 +291,7 @@
         </div>
     </div>
 
+    <!-- Cursos y Actividades -->
     <div class="row">
         <!-- Cursos Coordinados -->
         <div class="col-lg-6 mb-4">
@@ -163,32 +305,41 @@
                 </div>
                 <div class="card-body">
                     {% if cursos_coordinados %}
-                    <div class="row">
-                        {% for curso in cursos_coordinados %}
-                        <div class="col-12 mb-3">
-                            <div class="card curso-card border-success">
-                                <div class="card-body p-3">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div>
-                                            <h6 class="card-title text-success mb-1">{{ curso.nombre }}</h6>
-                                            <p class="card-text mb-1">
-                                                <small class="text-muted">
-                                                    <i class="bi bi-hash me-1"></i>{{ curso.codigo }}
-                                                </small>
-                                            </p>
+                        <div class="row">
+                            {% for curso in cursos_coordinados %}
+                            <div class="col-12 mb-3">
+                                <div class="card curso-card border-success">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="card-title text-success mb-1">{{ curso.nombre }}</h6>
+                                                <p class="card-text mb-1">
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-hash me-1"></i>{{ curso.codigo }}
+                                                    </small>
+                                                </p>
+                                                {% if curso.fecha_inicio and curso.fecha_fin %}
+                                                <p class="card-text mb-0">
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-calendar-range me-1"></i>
+                                                        {{ curso.fecha_inicio|date:"d/m/Y" }} - {{ curso.fecha_fin|date:"d/m/Y" }}
+                                                    </small>
+                                                </p>
+                                                {% endif %}
+                                            </div>
+                                            <span class="badge badge-sena">Coordinador</span>
                                         </div>
-                                        <span class="badge badge-sena">Coordinador</span>
                                     </div>
                                 </div>
                             </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
-                    </div>
                     {% else %}
-                    <div class="text-center py-4">
-                        <i class="bi bi-kanban text-muted" style="font-size: 3rem;"></i>
-                        <p class="text-muted mt-2">No coordina cursos actualmente</p>
-                    </div>
+                        <div class="text-center py-4">
+                            <i class="bi bi-kanban text-muted" style="font-size: 3rem;"></i>
+                            <h6 class="mt-3 text-muted">No coordina cursos actualmente</h6>
+                            <p class="text-muted mb-0">Este instructor no tiene cursos bajo su coordinación.</p>
+                        </div>
                     {% endif %}
                 </div>
             </div>
@@ -206,35 +357,181 @@
                 </div>
                 <div class="card-body">
                     {% if cursos_impartidos %}
-                    <div class="row">
-                        {% for curso in cursos_impartidos %}
-                        <div class="col-12 mb-3">
-                            <div class="card curso-card border-info">
-                                <div class="card-body p-3">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div>
-                                            <h6 class="card-title text-info mb-1">{{ curso.nombre }}</h6>
-                                            <p class="card-text mb-1">
-                                                <small class="text-muted">
-                                                    <i class="bi bi-hash me-1"></i>{{ curso.codigo }}
-                                                </small>
-                                            </p>
+                        <div class="row">
+                            {% for curso in cursos_impartidos %}
+                            <div class="col-12 mb-3">
+                                <div class="card curso-card border-info">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="card-title text-info mb-1">{{ curso.nombre }}</h6>
+                                                <p class="card-text mb-1">
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-hash me-1"></i>{{ curso.codigo }}
+                                                    </small>
+                                                </p>
+                                                {% if curso.fecha_inicio and curso.fecha_fin %}
+                                                <p class="card-text mb-0">
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-calendar-range me-1"></i>
+                                                        {{ curso.fecha_inicio|date:"d/m/Y" }} - {{ curso.fecha_fin|date:"d/m/Y" }}
+                                                    </small>
+                                                </p>
+                                                {% endif %}
+                                            </div>
+                                            <span class="badge bg-info">Instructor</span>
                                         </div>
-                                        <span class="badge bg-info">Instructor</span>
                                     </div>
                                 </div>
                             </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
-                    </div>
                     {% else %}
-                    <div class="text-center py-4">
-                        <i class="bi bi-book text-muted" style="font-size: 3rem;"></i>
-                        <p class="text-muted mt-2">No imparte cursos actualmente</p>
-                    </div>
+                        <div class="text-center py-4">
+                            <i class="bi bi-book text-muted" style="font-size: 3rem;"></i>
+                            <h6 class="mt-3 text-muted">No imparte cursos actualmente</h6>
+                            <p class="text-muted mb-0">Este instructor no está asignado a ningún curso.</p>
+                        </div>
                     {% endif %}
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
+
+    <!-- Resumen del Instructor -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header d-flex align-items-center">
+                    <i class="bi bi-graph-up me-2"></i>
+                    <h5 class="mb-0">Resumen del Instructor</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-3">
+                            <div class="info-item">
+                                <h4 class="fw-bold mb-1" style="color: #008000;">
+                                    {{ cursos_coordinados|length }}
+                                </h4>
+                                <small class="text-muted">Cursos Coordinados</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-item">
+                                <h4 class="fw-bold mb-1" style="color: #ff6600;">
+                                    {{ cursos_impartidos|length }}
+                                </h4>
+                                <small class="text-muted">Cursos Impartidos</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-item">
+                                <h4 class="fw-bold mb-1" style="color: #008000;">
+                                    {{ instructor.anos_experiencia|default:"0" }}
+                                </h4>
+                                <small class="text-muted">Años de Experiencia</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-item">
+                                <h4 class="fw-bold mb-1" style="color: #ff6600;">
+                                    {% if instructor.activo %}ACTIVO{% else %}INACTIVO{% endif %}
+                                </h4>
+                                <small class="text-muted">Estado</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                <a href="{% url 'instructores:lista_instructores' %}" class="btn btn-secondary btn-lg px-4">
+                    <i class="bi bi-arrow-left me-2"></i>Volver a la Lista
+                </a>
+                <a href="/admin/instructores/instructor/{{ instructor.id }}/change/" class="btn btn-primary btn-lg px-4">
+                    <i class="bi bi-pencil-square me-2"></i>Editar Información
+                </a>
+                <button class="btn btn-success btn-lg px-4" onclick="window.print()">
+                    <i class="bi bi-printer me-2"></i>Imprimir Perfil
+                </button>
+                {% if instructor.correo %}
+                <a href="mailto:{{ instructor.correo }}" class="btn btn-info btn-lg px-4">
+                    <i class="bi bi-envelope me-2"></i>Enviar Email
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Estilos adicionales para la página de detalle */
+.curso-card {
+    transition: all 0.3s ease;
+    border-radius: 10px;
+}
+
+.curso-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.info-card {
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+@media print {
+    .btn, .breadcrumb, .card-footer {
+        display: none !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animación de entrada para las tarjetas
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'all 0.6s ease';
+        
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 150);
+    });
+    
+    // Efecto hover mejorado para elementos interactivos
+    const interactiveElements = document.querySelectorAll('.info-item, .curso-card');
+    interactiveElements.forEach(element => {
+        element.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = 'rgba(0, 184, 148, 0.05)';
+            this.style.borderRadius = '10px';
+            this.style.transform = 'scale(1.02)';
+        });
+        
+        element.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = '';
+            this.style.borderRadius = '';
+            this.style.transform = '';
+        });
+    });
+});
+</script>
 {% endblock %}

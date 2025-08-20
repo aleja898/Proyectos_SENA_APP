@@ -4,94 +4,259 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-10">
+        <!-- Mostrar mensajes -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <div class="d-flex align-items-center">
+                        <span style="font-size: 1.2rem; margin-right: 10px;">
+                            {% if message.tags == 'success' %}✅{% elif message.tags == 'error' %}❌{% else %}ℹ️{% endif %}
+                        </span>
+                        <div>{{ message }}</div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Mostrar errores generales del formulario -->
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                <div class="d-flex align-items-center">
+                    <span style="font-size: 1.2rem; margin-right: 10px;">⚠️</span>
+                    <div>
+                        <h6>Errores en el formulario:</h6>
+                        {{ form.non_field_errors }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
         <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                <h3 class="card-title mb-0">
-                    <i class="fas fa-user-plus"></i> Agregar Instructor
-                </h3>
+            <div class="card-header">
+                <div class="d-flex align-items-center">
+                    <span style="font-size: 1.5rem; margin-right: 15px;">👨‍🏫</span>
+                    <div>
+                        <h3 class="mb-1">Agregar Nuevo Instructor</h3>
+                        <small class="opacity-75">Complete la información del instructor SENA</small>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <form method="post" novalidate>
                     {% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label>{{ form.tipo_documento.label }}</label>
-                            {{ form.tipo_documento }}
+                    
+                    <!-- Información Personal -->
+                    <div class="info-item mb-4">
+                        <h6 class="text-muted mb-3">
+                            <i class="fas fa-user-circle me-2"></i><strong>Información Personal</strong>
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.tipo_documento.label }}</label>
+                                {{ form.tipo_documento }}
+                                {% if form.tipo_documento.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.tipo_documento.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.documento_identidad.label }} <span class="text-danger">*</span></label>
+                                {{ form.documento_identidad }}
+                                {% if form.documento_identidad.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.documento_identidad.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label>{{ form.documento_identidad.label }} <span class="text-danger">*</span></label>
-                            {{ form.documento_identidad }}
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.nombre.label }} <span class="text-danger">*</span></label>
+                                {{ form.nombre }}
+                                {% if form.nombre.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.nombre.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.apellido.label }} <span class="text-danger">*</span></label>
+                                {{ form.apellido }}
+                                {% if form.apellido.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.apellido.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.fecha_nacimiento.label }} <span class="text-danger">*</span></label>
+                                {{ form.fecha_nacimiento }}
+                                {% if form.fecha_nacimiento.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.fecha_nacimiento.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.activo.label }} <span class="text-danger">*</span></label>
+                                {{ form.activo }}
+                                {% if form.activo.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.activo.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label>{{ form.nombre.label }} <span class="text-danger">*</span></label>
-                            {{ form.nombre }}
+                    <!-- Información de Contacto -->
+                    <div class="info-item mb-4">
+                        <h6 class="text-muted mb-3">
+                            <i class="fas fa-address-book me-2"></i><strong>Información de Contacto</strong>
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.telefono.label }}</label>
+                                {{ form.telefono }}
+                                {% if form.telefono.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.telefono.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.correo.label }}</label>
+                                {{ form.correo }}
+                                {% if form.correo.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.correo.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label>{{ form.apellido.label }} <span class="text-danger">*</span></label>
-                            {{ form.apellido }}
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.ciudad.label }}</label>
+                                {{ form.ciudad }}
+                                {% if form.ciudad.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.ciudad.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.direccion.label }} <span class="text-danger">*</span></label>
+                                {{ form.direccion }}
+                                {% if form.direccion.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.direccion.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label>{{ form.telefono.label }}</label>
-                            {{ form.telefono }}
+                    <!-- Información Académica -->
+                    <div class="info-item mb-4">
+                        <h6 class="text-muted mb-3">
+                            <i class="fas fa-graduation-cap me-2"></i><strong>Información Académica y Profesional</strong>
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.nivel_educativo.label }}</label>
+                                {{ form.nivel_educativo }}
+                                {% if form.nivel_educativo.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.nivel_educativo.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.especialidad.label }} <span class="text-danger">*</span></label>
+                                {{ form.especialidad }}
+                                {% if form.especialidad.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.especialidad.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label>{{ form.correo.label }}</label>
-                            {{ form.correo }}
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.anos_experiencia.label }}</label>
+                                {{ form.anos_experiencia }}
+                                {% if form.anos_experiencia.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.anos_experiencia.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label>{{ form.ciudad.label }}</label>
-                            {{ form.ciudad }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label>{{ form.direccion.label }} <span class="text-danger">*</span></label>
-                            {{ form.direccion }}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label>{{ form.nivel_educativo.label }}</label>
-                            {{ form.nivel_educativo }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label>{{ form.especialidad.label }} <span class="text-danger">*</span></label>
-                            {{ form.especialidad }}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label>{{ form.anos_experiencia.label }}</label>
-                            {{ form.anos_experiencia }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label>{{ form.activo.label }} <span class="text-danger">*</span></label>
-                            {{ form.activo }}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label>{{ form.fecha_vinculacion.label }}</label>
-                            {{ form.fecha_vinculacion }}
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label>{{ form.fecha_registro.label }}</label>
-                            {{ form.fecha_registro }}
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label>{{ form.fecha_nacimiento.label }} <span class="text-danger">*</span></label>
-                            {{ form.fecha_nacimiento }}
+                    <!-- Fechas Importantes -->
+                    <div class="info-item mb-4">
+                        <h6 class="text-muted mb-3">
+                            <i class="fas fa-calendar me-2"></i><strong>Fechas Importantes</strong>
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.fecha_vinculacion.label }}</label>
+                                {{ form.fecha_vinculacion }}
+                                {% if form.fecha_vinculacion.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.fecha_vinculacion.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.fecha_registro.label }}</label>
+                                {{ form.fecha_registro }}
+                                {% if form.fecha_registro.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.fecha_registro.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
 
@@ -108,11 +273,86 @@
         </div>
         
         <div class="mt-3">
-            <small class="text-muted">
-                <i class="fas fa-info-circle"></i> 
-                Los campos marcados con <span class="text-danger">*</span> son obligatorios.
-            </small>
+            <div class="alert" style="background: rgba(0, 128, 0, 0.1); border-left: 4px solid #008000;">
+                <div class="d-flex align-items-center">
+                    <span style="color: #008000; margin-right: 10px;">ℹ️</span>
+                    <div>
+                        <strong>Información importante:</strong>
+                        <p class="mb-0 mt-1">Los campos marcados con <span class="text-danger">*</span> son obligatorios para el registro del instructor.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animación de entrada para el formulario
+    const form = document.querySelector('.card');
+    form.style.opacity = '0';
+    form.style.transform = 'translateY(30px)';
+    form.style.transition = 'all 0.6s ease';
+    
+    setTimeout(() => {
+        form.style.opacity = '1';
+        form.style.transform = 'translateY(0)';
+    }, 100);
+    
+    // Mejorar la experiencia de los campos del formulario
+    const formControls = document.querySelectorAll('.form-control, .form-select');
+    formControls.forEach(control => {
+        control.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+            this.style.borderColor = '#00b894';
+            this.style.boxShadow = '0 0 0 0.2rem rgba(0, 184, 148, 0.25)';
+        });
+        
+        control.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+            this.style.borderColor = '';
+            this.style.boxShadow = '';
+        });
+    });
+    
+    // Validación en tiempo real
+    const requiredFields = document.querySelectorAll('input[required], select[required]');
+    requiredFields.forEach(field => {
+        field.addEventListener('blur', function() {
+            if (this.value.trim() === '') {
+                this.style.borderColor = '#dc3545';
+                this.parentElement.classList.add('has-error');
+            } else {
+                this.style.borderColor = '#28a745';
+                this.parentElement.classList.remove('has-error');
+            }
+        });
+    });
+});
+</script>
+
+<style>
+.info-item {
+    transition: all 0.3s ease;
+}
+
+.info-item:hover {
+    transform: translateX(3px);
+}
+
+.has-error .form-control {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.form-control:focus, .form-select:focus {
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .info-item {
+        margin-bottom: 1.5rem;
+    }
+}
+</style>
 {% endblock %}
